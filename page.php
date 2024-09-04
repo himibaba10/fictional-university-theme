@@ -41,8 +41,9 @@ while (have_posts()) {
                 </h2>
                 <ul class="min-list">
                     <?php wp_list_pages(array(
-                        "title_li" => NULL,
-                        "child_of" => $parentID
+                        "title_li" => NULL, //to hide the list title
+                        "child_of" => $parentID, //to get the child navigation link of the parent page
+                        "sort_column" => "menu_order" //to order navigation menus customly from wordpress 
                     )); ?>
                 </ul>
             </div>
