@@ -48,4 +48,6 @@ the_time() = shows the date of the posts
 the_author() = Displays just the author's name.
 the_author_link() = Displays the author's name with a link to their website (if applicable).
 the_author_posts_link() = Displays the author's name with a link to their posts archive page.
+
+paginate_links() = adds pagination (we have to echo)
 -->
