@@ -35,7 +35,7 @@
                         <h5 class="event-summary__title headline headline--tiny"><a
                                 href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
                         <p>
-                            <?php echo substr(get_the_content(), 0, 50) ?>
+                            <?php echo has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80); ?>
                             <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
                         </p>
                     </div>
@@ -69,8 +69,9 @@
                         <h5 class="event-summary__title headline headline--tiny"><a
                                 href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                         </h5>
-                        <p><?php echo substr(get_the_content(), 0, 80); ?> <a href="<?php the_permalink(); ?>"
-                                class="nu gray">Read more</a></p>
+                        <p><?php echo has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80); ?> <a
+                                href="<?php the_permalink(); ?>" class="nu gray">Read more</a>
+                        </p>
                     </div>
                 </div>
 
