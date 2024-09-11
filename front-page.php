@@ -21,15 +21,29 @@
             <?php
             $homepageEvents = new WP_Query(array(
                 'posts_per_page' => 2,
-                'post_type' => 'event'
+                'post_type' => 'event',
+                'meta_key' => 'event_date', // Custom field for sorting
+                'orderby' => 'meta_value', // Sort by meta value
+                'order' => 'ASC',
+                //metha_query is needed if we want to have the future events only(Not the past ones) 
+                'meta_query' => array(
+                    array(
+                        'key' => 'event_date',
+                        'value' => date('Y-m-d'), // Current date to filter for future events
+                        'compare' => '>=',
+                        'type' => 'DATE' // Assuming 'event_date' is a date
+                    )
+                )
             ));
 
             while ($homepageEvents->have_posts()) {
-                $homepageEvents->the_post(); ?>
+                $homepageEvents->the_post();
+                $eventDate = new DateTime(get_field("event_date"));
+                ?>
                 <div class="event-summary">
                     <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
-                        <span class="event-summary__month"><?php the_time("M") ?></span>
-                        <span class="event-summary__day"><?php the_time("d") ?></span>
+                        <span class="event-summary__month"><?php echo $eventDate->format("M") ?></span>
+                        <span class="event-summary__day"><?php echo $eventDate->format("d") ?></span>
                     </a>
                     <div class="event-summary__content">
                         <h5 class="event-summary__title headline headline--tiny"><a
