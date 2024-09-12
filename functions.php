@@ -28,3 +28,22 @@ function university_features()
 
 // after_setup_theme is for adding extra features like adding tab title
 add_action("after_setup_theme", "university_features");
+
+function university_adjust_queries($query)
+{
+    if (!is_admin() and is_post_type_archive("event") and $query->is_main_query()) {
+        $query->set("meta_key", "event_date");
+        $query->set("orderby", "meta_value");
+        $query->set("order", "ASC");
+        $query->set("meta_query", array(
+            array(
+                "key" => "event_date",
+                "compare" => ">=",
+                "value" => current_time("Ymd"),
+                "type" => "numeric"
+            )
+        ));
+    }
+}
+
+add_action("pre_get_posts", "university_adjust_queries");
