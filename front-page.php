@@ -17,21 +17,20 @@
     <div class="full-width-split__one">
         <div class="full-width-split__inner">
             <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
-
             <?php
+            $today = date('Ymd');
             $homepageEvents = new WP_Query(array(
-                'posts_per_page' => 2,
+                'posts_per_page' => -1,
                 'post_type' => 'event',
-                'meta_key' => 'event_date', // Custom field for sorting
-                'orderby' => 'meta_value', // Sort by meta value
+                'meta_key' => 'event_date',
+                'orderby' => 'meta_value_num',
                 'order' => 'ASC',
-                //metha_query is needed if we want to have the future events only(Not the past ones) 
                 'meta_query' => array(
                     array(
                         'key' => 'event_date',
-                        'value' => date('Y-m-d'), // Current date to filter for future events
                         'compare' => '>=',
-                        'type' => 'DATE' // Assuming 'event_date' is a date
+                        'value' => $today,
+                        'type' => 'numeric'
                     )
                 )
             ));
@@ -48,10 +47,9 @@
                     <div class="event-summary__content">
                         <h5 class="event-summary__title headline headline--tiny"><a
                                 href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
-                        <p>
-                            <?php echo has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80); ?>
-                            <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
-                        </p>
+
+                        <?php echo has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80); ?>
+                        <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
                     </div>
                 </div>
             <?php }
@@ -83,9 +81,8 @@
                         <h5 class="event-summary__title headline headline--tiny"><a
                                 href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                         </h5>
-                        <p><?php echo has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80); ?> <a
-                                href="<?php the_permalink(); ?>" class="nu gray">Read more</a>
-                        </p>
+                        <?php echo has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80); ?> <a
+                            href="<?php the_permalink(); ?>" class="nu gray">Read more</a>
                     </div>
                 </div>
 
