@@ -31,7 +31,8 @@ add_action("after_setup_theme", "university_features");
 
 function university_adjust_queries($query)
 {
-    if (!is_admin() and is_post_type_archive("event") and $query->is_main_query()) {
+    //For Event post type
+    if (!is_admin() and is_post_type_archive("event") and is_main_query()) {
         $query->set("meta_key", "event_date");
         $query->set("orderby", "meta_value");
         $query->set("order", "ASC");
@@ -43,6 +44,12 @@ function university_adjust_queries($query)
                 "type" => "numeric"
             )
         ));
+    }
+
+    //For Program post type
+    if (!is_admin() and is_post_type_archive("program") and is_main_query()) {
+        $query->set("orderby", "title");
+        $query->set("order", "ASC");
     }
 }
 
