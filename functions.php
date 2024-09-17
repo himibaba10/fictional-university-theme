@@ -56,4 +56,4 @@ function university_adjust_queries($query)
 add_action("pre_get_posts", "university_adjust_queries");
 
 //must need this add thumbnail on the post types
-add_theme_support('post-thumbnails');
+// add_theme_support('post-thumbnails');
