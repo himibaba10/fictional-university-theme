@@ -24,6 +24,8 @@ function university_features()
 
     //For registering the navmenu to control from wp dashboard
     register_nav_menu("headerNavMenu", "Header Nav Menu");
+
+    //To add featured images
     add_theme_support('post-thumbnails');
 }
 
