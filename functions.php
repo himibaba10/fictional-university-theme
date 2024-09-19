@@ -24,6 +24,7 @@ function university_features()
 
     //For registering the navmenu to control from wp dashboard
     register_nav_menu("headerNavMenu", "Header Nav Menu");
+    add_theme_support('post-thumbnails');
 }
 
 // after_setup_theme is for adding extra features like adding tab title
@@ -54,6 +55,3 @@ function university_adjust_queries($query)
 }
 
 add_action("pre_get_posts", "university_adjust_queries");
-
-//must need this add thumbnail on the post types
-// add_theme_support('post-thumbnails');
