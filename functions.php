@@ -27,6 +27,10 @@ function university_features()
 
     //To add featured images
     add_theme_support('post-thumbnails');
+
+    //to resize extra image size (shortName, width, height, crop)
+    add_image_size("professorLandscape", 400, 260, true);
+    add_image_size("professorPortrait", 480, 650, true);
 }
 
 // after_setup_theme is for adding extra features like adding tab title

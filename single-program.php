@@ -49,7 +49,8 @@ while (have_posts()) {
                 $relatedProfessors->the_post(); ?>
                 <li class="professor-card__list-item">
                     <a class="professor-card" href="<?php the_permalink() ?>">
-                        <img class="professor-card__image" src="<?php the_post_thumbnail_url(); ?>" alt="<?php get_the_title(); ?>">
+                        <img class="professor-card__image" src="<?php the_post_thumbnail_url("professorLandscape"); ?>"
+                            alt="<?php get_the_title(); ?>">
                         <span class="professor-card__name"><?php the_title() ?></span>
                     </a>
                 </li>
