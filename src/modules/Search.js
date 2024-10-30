@@ -5,7 +5,9 @@ class Search {
     this.openButton = $(".js-search-trigger");
     this.closeButton = $(".search-overlay__close");
     this.overlay = $(".search-overlay");
+    this.searchInput = $("#search-term");
     this.isOverlayOpen = false;
+    this.timer = null;
 
     this.event();
   }
@@ -14,6 +16,13 @@ class Search {
     this.openButton.on("click", this.showOverlay.bind(this));
     this.closeButton.on("click", this.hideOverlay.bind(this));
     $(document).on("keydown", this.keyPressDispatcher.bind(this));
+    this.searchInput.on("input", (e) => {
+      clearTimeout(this.timer);
+
+      this.timer = setTimeout(() => {
+        console.log(e.target.value);
+      }, 1000);
+    });
   }
 
   showOverlay() {

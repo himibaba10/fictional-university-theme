@@ -115,13 +115,21 @@ class Search {
     this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
     this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
     this.overlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
+    this.searchInput = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
     this.isOverlayOpen = false;
+    this.timer = null;
     this.event();
   }
   event() {
     this.openButton.on("click", this.showOverlay.bind(this));
     this.closeButton.on("click", this.hideOverlay.bind(this));
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keyPressDispatcher.bind(this));
+    this.searchInput.on("input", e => {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        console.log(e.target.value);
+      }, 1000);
+    });
   }
   showOverlay() {
     this.overlay.addClass("search-overlay--active");
