@@ -139,7 +139,7 @@ class Search {
     this.isOverlayOpen = false;
   }
   keyPressDispatcher(e) {
-    if (e.key === "s" && !this.isOverlayOpen) {
+    if (e.key === "s" && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()("input, textarea").is(":focus")) {
       this.showOverlay();
     }
     if (e.key === "Escape" && this.isOverlayOpen) {

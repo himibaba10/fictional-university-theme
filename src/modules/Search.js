@@ -34,7 +34,11 @@ class Search {
   }
 
   keyPressDispatcher(e) {
-    if (e.key === "s" && !this.isOverlayOpen) {
+    if (
+      e.key === "s" &&
+      !this.isOverlayOpen &&
+      !$("input, textarea").is(":focus")
+    ) {
       this.showOverlay();
     }
 
