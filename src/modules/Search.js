@@ -6,8 +6,10 @@ class Search {
     this.closeButton = $(".search-overlay__close");
     this.overlay = $(".search-overlay");
     this.searchInput = $("#search-term");
+    this.resultsDiv = $("#search-overlay__results");
     this.isOverlayOpen = false;
     this.timer = null;
+    this.isSpinnerVisible = false;
 
     this.event();
   }
@@ -16,13 +18,7 @@ class Search {
     this.openButton.on("click", this.showOverlay.bind(this));
     this.closeButton.on("click", this.hideOverlay.bind(this));
     $(document).on("keydown", this.keyPressDispatcher.bind(this));
-    this.searchInput.on("input", (e) => {
-      clearTimeout(this.timer);
-
-      this.timer = setTimeout(() => {
-        console.log(e.target.value);
-      }, 1000);
-    });
+    this.searchInput.on("input", this.typingLogic.bind(this));
   }
 
   showOverlay() {
@@ -45,6 +41,26 @@ class Search {
     if (e.key === "Escape" && this.isOverlayOpen) {
       this.hideOverlay();
     }
+  }
+
+  typingLogic(e) {
+    clearTimeout(this.timer);
+    console.log(this.searchInput.val());
+
+    if (!this.searchInput.val()) {
+      return this.resultsDiv.html("");
+    }
+
+    if (!this.isSpinnerVisible && this.searchInput.val()) {
+      this.resultsDiv.html('<div class="spinner-loader"></div>');
+      this.isSpinnerVisible = true;
+    }
+    this.timer = setTimeout(this.getResults.bind(this, e), 1000);
+  }
+
+  getResults(e) {
+    this.isSpinnerVisible = false;
+    this.resultsDiv.html(e.target.value);
   }
 }
 
