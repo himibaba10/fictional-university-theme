@@ -160,6 +160,10 @@ class Search {
   }
   getResults(e) {
     this.isSpinnerVisible = false;
+    console.log("Hi!");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${new URL(window.location.href).origin}/custom-university/wp-json/wp/v2/posts?search=${this.searchInput.val()}`, posts => {
+      console.log(posts);
+    });
     this.resultsDiv.html(e.target.value);
   }
 }

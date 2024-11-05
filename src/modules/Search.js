@@ -64,6 +64,15 @@ class Search {
 
   getResults(e) {
     this.isSpinnerVisible = false;
+    console.log("Hi!");
+    $.getJSON(
+      `${
+        new URL(window.location.href).origin
+      }/custom-university/wp-json/wp/v2/posts?search=${this.searchInput.val()}`,
+      (posts) => {
+        console.log(posts);
+      }
+    );
     this.resultsDiv.html(e.target.value);
   }
 }
