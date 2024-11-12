@@ -73,23 +73,22 @@ class Search {
         new URL(window.location.href).origin
       }/custom-university/wp-json/wp/v2/posts?search=${this.searchInput.val()}`,
       (posts) => {
-        if (posts.length > 0) {
-          posts.map((post) => {
-            this.resultsDiv.html(`
-              <h2 class="search-overlay__section-title">General Information</h2>
-              <ul class="link-list min-list">
-                ${posts
-                  .map(
-                    (post) =>
-                      `<li><a href="${post.link}">${post.title.rendered}</a></li>`
-                  )
-                  .join(" ")}
-              </ul>
-              `);
-          });
-        } else {
-          this.resultsDiv.html("<b>No posts found</b>");
-        }
+        this.resultsDiv.html(`
+          <h2 class="search-overlay__section-title">General Information</h2>
+          ${
+            posts.length
+              ? `
+            <ul class="link-list min-list">
+              ${posts
+                .map(
+                  (post) =>
+                    `<li><a href="${post.link}">${post.title.rendered}</a></li>`
+                )
+                .join(" ")}
+            </ul>`
+              : "<p>No general info found.</p>"
+          }
+          `);
       }
     );
   }
