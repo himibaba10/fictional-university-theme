@@ -143,6 +143,8 @@ class Search {
     this.overlay.removeClass("search-overlay--active");
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").removeClass("body-no-scroll");
     this.isOverlayOpen = false;
+    this.searchInput.val("");
+    this.resultsDiv.html("");
   }
   keyPressDispatcher(e) {
     if (e.key === "s" && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()("input, textarea").is(":focus")) {

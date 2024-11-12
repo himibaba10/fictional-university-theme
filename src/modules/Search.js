@@ -37,6 +37,8 @@ class Search {
     this.overlay.removeClass("search-overlay--active");
     $("body").removeClass("body-no-scroll");
     this.isOverlayOpen = false;
+    this.searchInput.val("");
+    this.resultsDiv.html("");
   }
 
   keyPressDispatcher(e) {
