@@ -132,6 +132,11 @@ class Search {
     this.overlay.addClass("search-overlay--active");
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
     this.isOverlayOpen = true;
+
+    // Add small delay to ensure overlay is visible first
+    setTimeout(() => {
+      this.searchInput.trigger("focus");
+    }, 100);
   }
   hideOverlay() {
     this.overlay.removeClass("search-overlay--active");
@@ -148,7 +153,6 @@ class Search {
   }
   typingLogic(e) {
     clearTimeout(this.timer);
-    console.log(this.searchInput.val());
     if (!this.searchInput.val()) {
       return this.resultsDiv.html("");
     }
@@ -160,11 +164,20 @@ class Search {
   }
   getResults(e) {
     this.isSpinnerVisible = false;
-    console.log("Hi!");
     jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${new URL(window.location.href).origin}/custom-university/wp-json/wp/v2/posts?search=${this.searchInput.val()}`, posts => {
-      console.log(posts);
+      if (posts.length > 0) {
+        posts.map(post => {
+          this.resultsDiv.html(`
+              <h2 class="search-overlay__section-title">General Information</h2>
+              <ul class="link-list min-list">
+                ${posts.map(post => `<li><a href="${post.link}">${post.title.rendered}</a></li>`).join(" ")}
+              </ul>
+              `);
+        });
+      } else {
+        this.resultsDiv.html("<b>No posts found</b>");
+      }
     });
-    this.resultsDiv.html(e.target.value);
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
