@@ -164,7 +164,7 @@ class Search {
   }
   getResults(e) {
     this.isSpinnerVisible = false;
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${new URL(window.location.href).origin}/custom-university/wp-json/wp/v2/posts?search=${this.searchInput.val()}`, posts => {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${universityData.root_url}/wp-json/wp/v2/posts?search=${this.searchInput.val()}`, posts => {
       this.resultsDiv.html(`
           <h2 class="search-overlay__section-title">General Information</h2>
           ${posts.length ? `

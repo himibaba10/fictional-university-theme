@@ -45,6 +45,10 @@ function university_files()
 
     // Structure: wp_enqueue_script("nickname", "filepath", "dependency array", "version", "boolean whether the script will run before closing body tag") 
     wp_enqueue_script("university_main_js", get_theme_file_uri("/build/index.js"), array("jquery"), "1.0", true);
+
+    wp_localize_script("university_main_js", "universityData", array(
+        "root_url" => get_site_url()
+    ));
 }
 
 //wp_enqueue_scripts is for adding files like css and js files

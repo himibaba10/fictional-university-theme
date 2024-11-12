@@ -70,8 +70,8 @@ class Search {
     this.isSpinnerVisible = false;
     $.getJSON(
       `${
-        new URL(window.location.href).origin
-      }/custom-university/wp-json/wp/v2/posts?search=${this.searchInput.val()}`,
+        universityData.root_url
+      }/wp-json/wp/v2/posts?search=${this.searchInput.val()}`,
       (posts) => {
         this.resultsDiv.html(`
           <h2 class="search-overlay__section-title">General Information</h2>
