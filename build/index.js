@@ -167,15 +167,23 @@ class Search {
   }
   getResults(e) {
     this.isSpinnerVisible = false;
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${universityData.root_url}/wp-json/wp/v2/posts?search=${this.searchInput.val()}`, posts => {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().when(this.fetchData("posts"), this.fetchData("pages")).then((posts, pages) => {
+      const combinedResults = [...posts[0], ...pages[0]];
       this.resultsDiv.html(`
-          <h2 class="search-overlay__section-title">General Information</h2>
-          ${posts.length ? `
-            <ul class="link-list min-list">
-              ${posts.map(post => `<li><a href="${post.link}">${post.title.rendered}</a></li>`).join(" ")}
-            </ul>` : "<p>No general info found.</p>"}
-          `);
+        <h2 class="search-overlay__section-title">General Information</h2>
+        ${combinedResults.length ? `
+          <ul class="link-list min-list">
+            ${combinedResults.map(post => `<li><a href="${post.link}">${post.title.rendered}</a></li>`).join(" ")}
+          </ul>` : "<p>No general info found.</p>"}
+        `);
     });
+
+    // $.getJSON(
+    //   `${
+    //     universityData.root_url
+    //   }/wp-json/wp/v2/posts?search=${this.searchInput.val()}`,
+    //   (posts) => {}
+    // );
   }
   addSearchHTML() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").append(`
@@ -194,6 +202,9 @@ class Search {
           </div>
       </div>
       `);
+  }
+  fetchData(postType) {
+    return jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${universityData.root_url}/wp-json/wp/v2/${postType}?search=${this.searchInput.val()}`);
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
