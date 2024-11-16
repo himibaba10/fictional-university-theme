@@ -1,5 +1,7 @@
 <?php
 
+require get_theme_file_path("/includes/search-route.php");
+
 function university_main_rest()
 {
     //register_rest_field is used to add a new field
