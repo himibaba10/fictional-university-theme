@@ -1,5 +1,18 @@
 <?php
 
+function university_main_rest()
+{
+    //register_rest_field is used to add a new field
+    register_rest_field("post", "authorName", array(
+        "get_callback" => function () {
+            return get_author_name();
+        }
+    ));
+}
+
+// rest_api_init action is used to manipulate the rest api
+add_action("rest_api_init", "university_main_rest");
+
 function pageBanner($args = NULL)
 {
     if (!isset($args['title'])) {
