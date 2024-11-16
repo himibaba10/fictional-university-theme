@@ -2,7 +2,7 @@
 
 require get_theme_file_path("/includes/search-route.php");
 
-function university_main_rest()
+function universityMainRest()
 {
     //register_rest_field is used to add a new field
     register_rest_field("post", "authorName", array(
@@ -13,7 +13,7 @@ function university_main_rest()
 }
 
 // rest_api_init action is used to manipulate the rest api
-add_action("rest_api_init", "university_main_rest");
+add_action("rest_api_init", "universityMainRest");
 
 function pageBanner($args = NULL)
 {
