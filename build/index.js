@@ -167,23 +167,40 @@ class Search {
   }
   getResults(e) {
     this.isSpinnerVisible = false;
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().when(this.fetchData("posts"), this.fetchData("pages")).then((posts, pages) => {
-      const combinedResults = [...posts[0], ...pages[0]];
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${universityData.root_url}/wp-json/university/v1/search?term=${this.searchInput.val()}`, results => {
       this.resultsDiv.html(`
-        <h2 class="search-overlay__section-title">General Information</h2>
-        ${combinedResults.length ? `
-          <ul class="link-list min-list">
-            ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a> ${item.type == "post" ? `- By ${item.authorName}` : ``}</li>`).join(" ")}
-          </ul>` : "<p>No general info found.</p>"}
-        `);
-    });
+          <div class="row">
+            <div class="one-third">
+              <h2 class="search-overlay__section-title">General Information</h2>
+              ${results.generalInfo.length ? `<ul class="link-list min-list">
+                    ${results.generalInfo.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join(" ")}
+                  </ul>` : `<p>No general info is found.</p>`}
+            </div>
+            <div class="one-third">
+              <h2 class="search-overlay__section-title">Programs</h2>
+              ${results.programs.length ? `<ul class="link-list min-list">
+                    ${results.programs.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join(" ")}
+                  </ul>` : `<p>No program is found. See <a href="${universityData.root_url}/programs">all programs</a></p>`}
 
-    // $.getJSON(
-    //   `${
-    //     universityData.root_url
-    //   }/wp-json/wp/v2/posts?search=${this.searchInput.val()}`,
-    //   (posts) => {}
-    // );
+              <h2 class="search-overlay__section-title">Professors</h2>
+              <ul class='professor-cards'>
+                ${results.professors.map(item => `<li class="professor-card__list-item">
+                          <a class="professor-card" href="${item.permalink}">
+                              <img class="professor-card__image" src="${item.thumbnail}"
+                                  alt="${item.title}">
+                              <span class="professor-card__name">${item.title}</span>
+                          </a>
+                      </li>`).join(" ")}
+              </ul>
+            </div>
+            <div class="one-third">
+              <h2 class="search-overlay__section-title">Campuses</h2>
+
+              <h2 class="search-overlay__section-title">Events</h2>
+            </div>
+          </div>
+          `);
+    });
   }
   addSearchHTML() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").append(`
@@ -202,9 +219,6 @@ class Search {
           </div>
       </div>
       `);
-  }
-  fetchData(postType) {
-    return jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${universityData.root_url}/wp-json/wp/v2/${postType}?search=${this.searchInput.val()}`);
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);

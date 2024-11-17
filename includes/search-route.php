@@ -37,7 +37,10 @@ function universitySearchResults($data)
         }
 
         if (get_post_type() == "professor") {
-            array_push($result['professors'], $selectedData);
+            array_push($result['professors'], [
+                ...$selectedData,
+                "thumbnail" => get_the_post_thumbnail_url(get_the_ID(), 'professorLandscape')
+            ]);
         }
 
         if (get_post_type() == "program") {
