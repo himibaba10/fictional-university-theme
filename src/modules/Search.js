@@ -59,6 +59,7 @@ class Search {
     clearTimeout(this.timer);
 
     if (!this.searchInput.val()) {
+      this.isSpinnerVisible = false;
       return this.resultsDiv.html("");
     }
 

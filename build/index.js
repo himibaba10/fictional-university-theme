@@ -157,6 +157,7 @@ class Search {
   typingLogic(e) {
     clearTimeout(this.timer);
     if (!this.searchInput.val()) {
+      this.isSpinnerVisible = false;
       return this.resultsDiv.html("");
     }
     if (!this.isSpinnerVisible && this.searchInput.val()) {
