@@ -184,7 +184,7 @@ class Search {
                   </ul>` : `<p>No program is found. See <a href="${universityData.root_url}/programs">all programs</a></p>`}
 
               <h2 class="search-overlay__section-title">Professors</h2>
-              <ul class='professor-cards'>
+              ${results.professors.length ? `<ul class='professor-cards'>
                 ${results.professors.map(item => `<li class="professor-card__list-item">
                           <a class="professor-card" href="${item.permalink}">
                               <img class="professor-card__image" src="${item.thumbnail}"
@@ -192,12 +192,29 @@ class Search {
                               <span class="professor-card__name">${item.title}</span>
                           </a>
                       </li>`).join(" ")}
-              </ul>
+              </ul>` : `<p>No professor is found.</p>`}
             </div>
             <div class="one-third">
               <h2 class="search-overlay__section-title">Campuses</h2>
 
               <h2 class="search-overlay__section-title">Events</h2>
+              ${results.events.length ? `<ul class='professor-cards'>
+                ${results.events.map(item => `
+                    <div class="event-summary">
+                        <a class="event-summary__date t-center" href="${item.permalink}">
+                            <span class="event-summary__month">${item.month}</span>
+                            <span class="event-summary__day">${item.day}</span>
+                        </a>
+                        <div class="event-summary__content">
+                            <h5 class="event-summary__title headline headline--tiny"><a
+                                    href="${item.permalink}">${item.title}</a></h5>
+
+                            ${item.excerpt}
+                            <a href="${item.title}" class="nu gray">Learn more</a>
+                        </div>
+                    </div>
+                    `).join(" ")}
+              </ul>` : `<p>No event is found. See <a href="${universityData.root_url}/events">all events</a></p></p>`}
             </div>
           </div>
           `);

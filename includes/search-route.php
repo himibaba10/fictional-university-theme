@@ -52,7 +52,17 @@ function universitySearchResults($data)
         }
 
         if (get_post_type() == "event") {
-            array_push($result['events'], $selectedData);
+            $eventDate = new DateTime(get_field("event_date"));
+            $excerpt = has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80);
+            $month = $eventDate->format("M");
+            $day = $eventDate->format("d");
+
+            array_push($result['events'], [
+                ...$selectedData,
+                "excerpt" => $excerpt,
+                "month" => $month,
+                "day" => $day,
+            ]);
         }
     }
 
