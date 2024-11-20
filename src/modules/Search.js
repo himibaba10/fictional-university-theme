@@ -132,6 +132,18 @@ class Search {
             </div>
             <div class="one-third">
               <h2 class="search-overlay__section-title">Campuses</h2>
+              ${
+                results.campuses.length
+                  ? `<ul class="link-list min-list">
+                    ${results.campuses
+                      .map(
+                        (item) =>
+                          `<li><a href="${item.permalink}">${item.title}</a></li>`
+                      )
+                      .join(" ")}
+                  </ul>`
+                  : `<p>No campuses is found. See <a href="${universityData.root_url}/campuses">all Campuses</a></p>`
+              }
 
               <h2 class="search-overlay__section-title">Events</h2>
               ${

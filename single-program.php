@@ -50,7 +50,7 @@ while (have_posts()) {
         }
 
         $today = date('Ymd');
-        $homepageEvents = new WP_Query(array(
+        $relatedEvents = new WP_Query(array(
             'posts_per_page' => 2,
             'post_type' => 'event',
             'meta_key' => 'event_date',
@@ -71,17 +71,17 @@ while (have_posts()) {
             )
         ));
 
-        if ($homepageEvents->have_posts()) {
+        if ($relatedEvents->have_posts()) {
             echo '<hr class="section-break">';
             echo '<h2 class="headline headline--medium">Upcoming ' . get_the_title() . ' Events</h2>';
-            while ($homepageEvents->have_posts()) {
-                $homepageEvents->the_post();
+            while ($relatedEvents->have_posts()) {
+                $relatedEvents->the_post();
                 get_template_part("template-parts/content", "event");
             }
             wp_reset_postdata();
         }
 
-        $relatedCampuses = get_field("related_campus");
+        $relatedCampuses = get_field("related_campuses");
         if ($relatedCampuses) {
             echo '<hr class="section-break">';
             echo '<h2 class="headline headline--medium">Available Campuses</h2>';

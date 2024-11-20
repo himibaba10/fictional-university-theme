@@ -24,7 +24,7 @@ while (have_posts()) {
             'order' => 'ASC',
             'meta_query' => array(
                 array(
-                    'key' => 'related_campus',
+                    'key' => 'related_campuses',
                     'compare' => 'LIKE',
                     'value' => '"' . get_the_ID() . '"',
                 )
