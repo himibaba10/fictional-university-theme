@@ -11,6 +11,9 @@ function universityRegisterSearch()
 
 function universitySearchResults($data)
 {
+    $uniqueEvents = [];
+    $uniqueCampuses = [];
+
     $data = new WP_Query(array(
         "post_type" => array("post", "page", "professor", "program", "campus", "event"),
         "s" => sanitize_text_field($data["term"]) //s means search & $data is the array of the parameters that are used in url. And the sanitize_text_field is a security layer
@@ -35,7 +38,7 @@ function universitySearchResults($data)
 
         if (get_post_type() == "post" or get_post_type() == "page") {
             array_push($result['generalInfo'], $selectedData);
-            return;
+            continue;
         }
 
         if (get_post_type() == "professor") {
@@ -52,6 +55,7 @@ function universitySearchResults($data)
                 ...$selectedData,
                 "thumbnail" => get_the_post_thumbnail_url(get_the_ID(), 'professorLandscape')
             ]);
+            continue;
         }
 
         if (get_post_type() == "program") {
@@ -108,6 +112,10 @@ function universitySearchResults($data)
 
             while ($relatedEvents->have_posts()) {
                 $relatedEvents->the_post();
+                if (in_array(get_the_ID(), $uniqueEvents)) {
+                    continue;
+                }
+                $uniqueEvents[] = get_the_ID();
                 $eventDate = new DateTime(get_field("event_date"));
                 $excerpt = has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80);
                 $month = $eventDate->format("M");
@@ -124,6 +132,10 @@ function universitySearchResults($data)
 
             // Related Campuses
             foreach ($relatedCampuses as $campus) {
+                if (in_array($campus->ID, $uniqueCampuses)) {
+                    continue;
+                }
+                $uniqueCampuses[] = $campus->ID;
                 array_push($result['campuses'], [
                     "id" => get_the_ID(),
                     "title" => get_the_title($campus),
@@ -134,7 +146,10 @@ function universitySearchResults($data)
         }
 
         if (get_post_type() == "campus") {
-            array_push($result['campuses'], $selectedData);
+            if (!in_array(get_the_ID(), $uniqueCampuses)) {
+                $uniqueCampuses[] = get_the_ID();
+                array_push($result['campuses'], $selectedData);
+            }
 
             // Related Programs
             $relatedPrograms = new WP_Query(array(
@@ -164,6 +179,10 @@ function universitySearchResults($data)
         }
 
         if (get_post_type() == "event") {
+            if (in_array(get_the_ID(), $uniqueEvents)) {
+                return;
+            }
+            $uniqueEvents[] = get_the_ID();
             $eventDate = new DateTime(get_field("event_date"));
             $excerpt = has_excerpt() ? get_the_excerpt() : substr(get_the_content(), 0, 80);
             $month = $eventDate->format("M");
@@ -187,8 +206,16 @@ function universitySearchResults($data)
                     "permalink" => get_the_permalink($program)
                 ]);
             }
+            continue;
         }
     }
+
+    // These are for removing duplicates
+    $result['programs'] = array_values(array_unique($result['programs'], SORT_REGULAR));
+    $result['professors'] = array_values(array_unique($result['professors'], SORT_REGULAR));
+    $result['campuses'] = array_values(array_unique($result['campuses'], SORT_REGULAR));
+    $result['events'] = array_values(array_unique($result['events'], SORT_REGULAR));
+    $result['generalInfo'] = array_values(array_unique($result['generalInfo'], SORT_REGULAR));
 
     return $result;
 }

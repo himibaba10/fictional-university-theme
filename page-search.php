@@ -41,9 +41,12 @@ while (have_posts()) {
         <?php } ?>
 
         <div class="generic-content">
-            <form action="/">
-                <input type="search" name="s" id="s">
-                <input type="submit" value="Search">
+            <form class="search-form" action="/">
+                <label for="s" class="headline headline--medium">Perform a new search</label>
+                <div class="search-form-row">
+                    <input placeholder="What are you looking for?" type="search" class="s" name="s" id="s">
+                    <input class="search-submit" type="submit" value="Search">
+                </div>
             </form>
         </div>
     </div>
