@@ -116,7 +116,7 @@ add_action("pre_get_posts", "university_adjust_queries");
 
 
 
-function redicectSubscriberToHomepage()
+function redirectSubscriberToHomepage()
 {
     $currentUser = wp_get_current_user();
 
@@ -126,4 +126,15 @@ function redicectSubscriberToHomepage()
     }
 }
 
-add_action("admin_init", "redicectSubscriberToHomepage");
+add_action("admin_init", "redirectSubscriberToHomepage");
+
+function noSubscriberAdminBar()
+{
+    $currentUser = wp_get_current_user();
+
+    if (count($currentUser->roles) == 1 and $currentUser->roles[0] == "subscriber") {
+        show_admin_bar(false);
+    }
+}
+
+add_action("wp_loaded", "noSubscriberAdminBar");
