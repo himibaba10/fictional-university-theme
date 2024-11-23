@@ -91,7 +91,7 @@ add_action("after_setup_theme", "university_features");
 function university_adjust_queries($query)
 {
     //For Event post type
-    if (!is_admin() and is_post_type_archive("event") and is_main_query()) {
+    if (!is_admin() and is_post_type_archive(post_types: "event") and is_main_query()) {
         $query->set("meta_key", "event_date");
         $query->set("orderby", "meta_value");
         $query->set("order", "ASC");
@@ -113,3 +113,17 @@ function university_adjust_queries($query)
 }
 
 add_action("pre_get_posts", "university_adjust_queries");
+
+
+
+function redicectSubscriberToHomepage()
+{
+    $currentUser = wp_get_current_user();
+
+    if (count($currentUser->roles) == 1 and $currentUser->roles[0] == "subscriber") {
+        wp_redirect(site_url("/"));
+        exit();
+    }
+}
+
+add_action("admin_init", "redicectSubscriberToHomepage");
