@@ -10,6 +10,7 @@ function university_files()
     wp_enqueue_script("university_main_script", get_theme_file_uri("/build/index.js"), array("jquery"), "1.0", true);
 }
 
+//wp_enqueue_scripts is for adding css and js files
 add_action("wp_enqueue_scripts", "university_files");
 
 function university_features()
