@@ -18,12 +18,19 @@
             <i class="site-header__menu-trigger fa fa-bars" aria-hidden="true"></i>
             <div class="site-header__menu group">
                 <nav class="main-navigation">
+                    <!-- <?php
+                    wp_nav_menu(array(
+                        "theme_location" => "mainMenuLocation"
+                    )); ?> -->
                     <ul>
-                        <li><a href="<?php echo site_url("/about-us"); ?>">About Us</a></li>
+                        <li class="<?php if (is_page("about-us") or wp_get_post_parent_id() === 14)
+                            echo "current-menu-item"; ?>"><a href="<?php echo site_url("/about-us"); ?>">About Us</a>
+                        </li>
                         <li><a href="#">Programs</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Campuses</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li class="<?php if (is_home())
+                            echo "current-menu-item"; ?>"><a href="<?php echo site_url("/blog"); ?>">Blog</a></li>
                     </ul>
                 </nav>
                 <div class="site-header__util">

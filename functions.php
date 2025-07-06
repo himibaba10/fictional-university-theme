@@ -15,7 +15,11 @@ add_action("wp_enqueue_scripts", "university_files");
 
 function university_features()
 {
+    // To add title on the browser tab
     add_theme_support("title-tag");
+
+    // To add navigation menu
+    register_nav_menu("mainMenuLocation", "Main Menu Location");
 }
 
 add_action("after_setup_theme", "university_features");
