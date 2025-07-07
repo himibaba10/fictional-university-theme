@@ -29,7 +29,7 @@
                         <li><a href="#">Programs</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Campuses</a></li>
-                        <li class="<?php if (is_home() or is_single())
+                        <li class="<?php if (get_post_type() === "post")
                             echo "current-menu-item"; ?>"><a href="<?php echo site_url("/blog"); ?>">Blog</a></li>
                     </ul>
                 </nav>
