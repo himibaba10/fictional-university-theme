@@ -25,7 +25,9 @@
             <div class="generic-content"><?php the_excerpt(); ?></div>
         </div>
 
-    <?php } ?>
+    <?php }
+    echo paginate_links();
+    ?>
 </div>
 
 <?php get_footer(); ?>
