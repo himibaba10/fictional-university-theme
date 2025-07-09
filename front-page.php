@@ -19,7 +19,7 @@
 
             <?php
             $homeEvents = new WP_Query(array(
-                "post_type"=> "event",
+                "post_type" => "event",
                 "posts_per_page" => 2
             ));
             while ($homeEvents->have_posts()) {
@@ -42,7 +42,8 @@
             <?php }
             wp_reset_postdata(); ?>
 
-            <p class="t-center no-margin"><a href="#" class="btn btn--blue">View All Events</a></p>
+            <p class="t-center no-margin"><a href="<?php echo get_post_type_archive_link("event") ?>"
+                    class="btn btn--blue">View All Events</a></p>
         </div>
     </div>
     <div class="full-width-split__two">
