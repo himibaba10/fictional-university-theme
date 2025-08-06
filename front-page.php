@@ -18,9 +18,21 @@
             <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
 
             <?php
+            $today = date(format: 'Ymd');
             $homeEvents = new WP_Query(array(
                 "post_type" => "event",
-                "posts_per_page" => 2
+                "posts_per_page" => 2,
+                "orderby" => "meta_value_num",
+                "meta_key" => "event_date",
+                "order" => "ASC",
+                "meta_query" => array(
+                    array(
+                        "key" => "event_date",
+                        "compare" => ">=",
+                        "value" => $today,
+                        "type" => "numeric"
+                    )
+                )
             ));
             while ($homeEvents->have_posts()) {
                 $homeEvents->the_post();
@@ -38,7 +50,7 @@
                                 href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                         </h5>
                         <p>
-                            <?php echo wp_trim_words(get_the_excerpt(), 10) ?>
+                            <?php echo wp_trim_words(get_the_excerpt(), 7) ?>
                             <a href="<?php the_permalink(); ?>" class="nu gray">Read more</a>
                         </p>
                     </div>
