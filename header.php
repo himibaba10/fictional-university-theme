@@ -26,11 +26,17 @@
                         <li class="<?php if (is_page("about-us") or wp_get_post_parent_id() === 14)
                             echo "current-menu-item"; ?>"><a href="<?php echo site_url("/about-us"); ?>">About Us</a>
                         </li>
-                        <li><a href="#">Programs</a></li>
+
+                        <li class="<?php if (get_post_type() === "program")
+                            echo "current-menu-item"; ?>"><a
+                                href="<?php echo get_post_type_archive_link("program"); ?>">Programs</a></li>
+
                         <li class="<?php if (get_post_type() === "event" or is_page("past-events"))
                             echo "current-menu-item"; ?>"><a
                                 href="<?php echo get_post_type_archive_link("event"); ?>">Events</a></li>
+
                         <li><a href="#">Campuses</a></li>
+
                         <li class="<?php if (get_post_type() === "post")
                             echo "current-menu-item"; ?>"><a href="<?php echo site_url("/blog"); ?>">Blog</a></li>
                     </ul>

@@ -25,6 +25,59 @@ while (have_posts()) {
             </p>
         </div>
         <div class="generic-content"><?php the_content(); ?></div>
+
+        <?php
+        $programID = get_the_ID();
+        $today = date(format: 'Ymd');
+
+        $relatedEvents = new WP_Query(array(
+            "post_type" => "event",
+            "posts_per_page" => -1,
+            "meta_query" => array(
+                array(
+                    "key" => "event_date",
+                    "compare" => ">=",
+                    "value" => $today,
+                    "type" => "numeric"
+                ),
+                array(
+                    "key" => "related_programs",
+                    "compare" => "LIKE",
+                    "value" => '"' . $programID . '"'
+                )
+            )
+        ));
+
+        if ($relatedEvents->have_posts()) { ?>
+            <hr class="section-break">
+            <h2 class="headline headline--medium">Upcoming <?php the_title(); ?> Events</h2>
+            <ul class="min-list">
+                <?php while ($relatedEvents->have_posts()) {
+                    $relatedEvents->the_post();
+                    $eventDate = new DateTime(get_field("event_date"));
+                    $eventMonth = $eventDate->format("M");
+                    $eventDate = $eventDate->format("d");
+                    ?>
+                    <div class="event-summary">
+                        <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
+                            <span class="event-summary__month"><?php echo $eventMonth; ?></span>
+                            <span class="event-summary__day"><?php echo $eventDate; ?></span>
+                        </a>
+                        <div class="event-summary__content">
+                            <h5 class="event-summary__title headline headline--tiny"><a
+                                    href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                            </h5>
+                            <p>
+                                <?php echo wp_trim_words(get_the_excerpt(), 7) ?>
+                                <a href="<?php the_permalink(); ?>" class="nu gray">Read more</a>
+                            </p>
+                        </div>
+                    </div>
+                <?php } ?>
+            </ul>
+            <?php wp_reset_postdata();
+        } ?>
+
     </div>
 
 <?php }
