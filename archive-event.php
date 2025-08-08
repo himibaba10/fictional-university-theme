@@ -14,6 +14,7 @@
 <div class="container container--narrow page-section">
     <?php while (have_posts()) {
         the_post();
+
         $eventDate = new DateTime(get_field("event_date"));
         $eventMonth = $eventDate->format("M");
         $eventDate = $eventDate->format("d");
