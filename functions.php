@@ -18,6 +18,13 @@ function university_features()
     // To add title on the browser tab
     add_theme_support("title-tag");
 
+    // To featured image
+    add_theme_support("post-thumbnails");
+
+    // Add image size
+    add_image_size("professorLandscape", 400, 260, true);
+    add_image_size("professorPortrait", 480, 650, true);
+
     // To add navigation menu
     register_nav_menu("mainMenuLocation", "Main Menu Location");
 }
