@@ -28,6 +28,34 @@ while (have_posts()) {
 
         <?php
         $programID = get_the_ID();
+
+        $relatedProfessors = new WP_Query(array(
+            "post_type" => "professor",
+            "posts_per_page" => -1,
+            "orderby" => "title",
+            "order" => "ASC",
+            "meta_query" => array(
+                array(
+                    "key" => "related_programs",
+                    "compare" => "LIKE",
+                    "value" => '"' . $programID . '"'
+                )
+            )
+        ));
+
+        if ($relatedProfessors->have_posts()) { ?>
+            <hr class="section-break">
+            <h2 class="headline headline--medium"><?php the_title(); ?> Taught By</h2>
+            <ul class="min-list link-list">
+                <?php while ($relatedProfessors->have_posts()) {
+                    $relatedProfessors->the_post();
+                    ?>
+                    <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+                <?php } ?>
+            </ul>
+            <?php wp_reset_postdata();
+        }
+
         $today = date(format: 'Ymd');
 
         $relatedEvents = new WP_Query(array(
