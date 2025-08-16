@@ -35,7 +35,9 @@
                             echo "current-menu-item"; ?>"><a
                                 href="<?php echo get_post_type_archive_link("event"); ?>">Events</a></li>
 
-                        <li><a href="#">Campuses</a></li>
+                        <li class="<?php if (get_post_type() === "campus")
+                            echo "current-menu-item"; ?>"><a
+                                href="<?php echo get_post_type_archive_link("campus"); ?>">Campuses</a></li>
 
                         <li class="<?php if (get_post_type() === "post")
                             echo "current-menu-item"; ?>"><a href="<?php echo site_url("/blog"); ?>">Blog</a></li>

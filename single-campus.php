@@ -8,8 +8,8 @@ while (have_posts()) {
     <div class="container container--narrow page-section">
         <div class="metabox metabox--position-up metabox--with-home-link">
             <p>
-                <a class="metabox__blog-home-link" href="<?php echo get_post_type_archive_link("program") ?>">
-                    <i class="fa fa-home" aria-hidden="true"></i> All Programs
+                <a class="metabox__blog-home-link" href="<?php echo get_post_type_archive_link("campus") ?>">
+                    <i class="fa fa-home" aria-hidden="true"></i> All Campuses
                 </a>
                 <span class="metabox__main"><?php the_title(); ?></span>
             </p>
@@ -17,36 +17,31 @@ while (have_posts()) {
         <div class="generic-content"><?php the_content(); ?></div>
 
         <?php
-        $programID = get_the_ID();
+        $campusID = get_the_ID();
 
-        $relatedProfessors = new WP_Query(array(
-            "post_type" => "professor",
+        $relatedPrograms = new WP_Query(array(
+            "post_type" => "program",
             "posts_per_page" => -1,
             "orderby" => "title",
             "order" => "ASC",
             "meta_query" => array(
                 array(
-                    "key" => "related_programs",
+                    "key" => "related_campuses",
                     "compare" => "LIKE",
-                    "value" => '"' . $programID . '"'
+                    "value" => '"' . $campusID . '"'
                 )
             )
         ));
 
-        if ($relatedProfessors->have_posts()) { ?>
+        if ($relatedPrograms->have_posts()) { ?>
             <hr class="section-break">
-            <h2 class="headline headline--medium"><?php the_title(); ?> Taught By</h2>
-            <ul class="professor-cards">
-                <?php while ($relatedProfessors->have_posts()) {
-                    $relatedProfessors->the_post();
+            <h2 class="headline headline--medium">Available Programs at <?php the_title(); ?></h2>
+
+            <ul class="link-list min-list">
+                <?php while ($relatedPrograms->have_posts()) {
+                    $relatedPrograms->the_post();
                     ?>
-                    <li class="professor-card__list-item">
-                        <a class="professor-card" href="<?php the_permalink(); ?>">
-                            <img class="professor-card__image" src="<?php the_post_thumbnail_url("professorLandscape"); ?>"
-                                alt="<?php the_title(); ?>">
-                            <span class="professor-card__name"><?php the_title(); ?></span>
-                        </a>
-                    </li>
+                    <li><a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a></li>
                 <?php } ?>
             </ul>
             <?php wp_reset_postdata();
@@ -67,7 +62,7 @@ while (have_posts()) {
                 array(
                     "key" => "related_programs",
                     "compare" => "LIKE",
-                    "value" => '"' . $programID . '"'
+                    "value" => '"' . $campusID . '"'
                 )
             )
         ));
@@ -82,19 +77,7 @@ while (have_posts()) {
                 } ?>
             </ul>
             <?php wp_reset_postdata();
-        }
-
-        $relatedCampuses = get_field("related_campuses");
-
-        if ($relatedCampuses) { ?>
-            <hr class="section-break">
-            <h2 class="headline headline--medium"><?php the_title(); ?> is Taught by:</h2>
-            <ul class="link-list min-list">
-                <?php foreach ($relatedCampuses as $program) { ?>
-                    <li><a href="<?php echo get_the_permalink($program); ?>"><?php echo get_the_title($program); ?></a></li>
-                <?php } ?>
-            </ul>
-        <?php } ?>
+        } ?>
 
     </div>
 
