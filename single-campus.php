@@ -45,38 +45,6 @@ while (have_posts()) {
                 <?php } ?>
             </ul>
             <?php wp_reset_postdata();
-        }
-
-        $today = date(format: 'Ymd');
-
-        $relatedEvents = new WP_Query(array(
-            "post_type" => "event",
-            "posts_per_page" => -1,
-            "meta_query" => array(
-                array(
-                    "key" => "event_date",
-                    "compare" => ">=",
-                    "value" => $today,
-                    "type" => "numeric"
-                ),
-                array(
-                    "key" => "related_programs",
-                    "compare" => "LIKE",
-                    "value" => '"' . $campusID . '"'
-                )
-            )
-        ));
-
-        if ($relatedEvents->have_posts()) { ?>
-            <hr class="section-break">
-            <h2 class="headline headline--medium">Upcoming <?php the_title(); ?> Events</h2>
-            <ul class="min-list">
-                <?php while ($relatedEvents->have_posts()) {
-                    $relatedEvents->the_post();
-                    get_template_part("template-parts/content", "event");
-                } ?>
-            </ul>
-            <?php wp_reset_postdata();
         } ?>
 
     </div>
