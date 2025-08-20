@@ -4100,6 +4100,7 @@ class Search {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
     this.isOverlayOpen = true;
     setTimeout(() => this.searchTerm.trigger("focus"), 50);
+    return false;
   };
   closeOverlay = () => {
     this.searchOverlay.removeClass("search-overlay--active");
