@@ -1,5 +1,18 @@
 <?php
 
+require get_theme_file_path("/inc/search-route.php");
+
+function university_custom_rest()
+{
+    register_rest_field("post", "authorName", array(
+        "get_callback" => function () {
+            return get_the_author();
+        }
+    ));
+}
+
+add_action("rest_api_init", "university_custom_rest");
+
 function pageBanner($args = NULL)
 {
 
@@ -42,6 +55,11 @@ function university_files()
     wp_enqueue_style("university_additional_style", get_theme_file_uri("/build/index.css"));
 
     wp_enqueue_script("university_main_script", get_theme_file_uri("/build/index.js"), array("jquery"), "1.0", true);
+
+    // To provide necessary variables to the javascript file
+    wp_localize_script("university_main_script", "universityData", array(
+        "rootUrl" => get_site_url()
+    ));
 }
 
 //wp_enqueue_scripts is for adding css and js files

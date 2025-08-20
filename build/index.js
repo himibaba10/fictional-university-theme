@@ -4025,10 +4025,162 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
 class Search {
-  constructor() {}
+  constructor() {
+    this.addSearchHTML();
+    this.searchTerm = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
+    this.resultsDiv = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-overlay__results");
+    this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
+    this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
+    this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
+    this.isOverlayOpen = false;
+    this.isSpinnerVisible = false;
+    this.searchTimeout = null;
+    this.events();
+  }
+  events() {
+    this.openButton.on("click", this.openOverlay);
+    this.closeButton.on("click", this.closeOverlay);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keyPressDispatcher);
+    this.searchTerm.on("input", this.searchTermHandler);
+  }
+  searchTermHandler = () => {
+    clearTimeout(this.searchTimeout);
+    if (!this.isSpinnerVisible) {
+      this.resultsDiv.html("<div class='spinner-loader'></div>");
+      this.isSpinnerVisible = true;
+    }
+    if (!this.searchTerm.val()) {
+      this.resultsDiv.html("");
+      this.isSpinnerVisible = false;
+      return;
+    }
+    this.searchTimeout = setTimeout(() => {
+      this.getResults();
+    }, 1000);
+  };
+  getResults = () => {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(`${universityData.rootUrl}/wp-json/university/v1/search?term=${this.searchTerm.val().toLowerCase()}`, results => {
+      console.log(results);
+      this.resultsDiv.html(`
+          <div class="row">
+            <div class="one-third">
+              ${this.showGeneralHtml("General Information", results.generalInfo, "No general info found.")}
+            </div>
+            <div class="one-third">
+              ${this.showGeneralHtml("Programs", results.programs, "No program found.")}
+
+              ${this.showProfessorsHtml(results.professors)}
+            </div>
+            <div class="one-third">
+              ${this.showGeneralHtml("Campuses", results.campuses, "No campus found.")}
+
+              ${this.showEventsHtml(results.events)}
+            </div>
+          </div>
+        `);
+    }).catch(err => {
+      console.log(err);
+    });
+    this.isSpinnerVisible = false;
+  };
+  keyPressDispatcher = e => {
+    if (e.keyCode === 83 && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()("input, textarea").is(":focus")) {
+      this.openOverlay();
+    }
+    if (e.keyCode === 27 && this.isOverlayOpen) {
+      this.closeOverlay();
+    }
+  };
+  openOverlay = () => {
+    this.searchOverlay.addClass("search-overlay--active");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
+    this.isOverlayOpen = true;
+    setTimeout(() => this.searchTerm.trigger("focus"), 50);
+  };
+  closeOverlay = () => {
+    this.searchOverlay.removeClass("search-overlay--active");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").removeClass("body-no-scroll");
+    this.isOverlayOpen = false;
+  };
+  addSearchHTML = () => {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").append(`
+    <div class="search-overlay">
+      <div class="search-overlay__top">
+          <div class="container">
+              <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>
+              <input type="text" class="search-term" id="search-term" placeholder="What are you looking for?">
+              <i class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>
+          </div>
+      </div>
+
+      <div class="container">
+          <div id="search-overlay__results"></div>
+      </div>
+    </div>  
+    `);
+  };
+  showGeneralHtml = (title, data, error) => {
+    return `
+    <h2 class="search-overlay__section-title">${title}</h2>
+    ${data.length ? `
+                  <ul class="link-list min-list">
+                    ${data.map(item => `<li><a href="${item.permalink}">${item.title}</a> ${item.postType === "post" ? ` by ${item.authorName}` : ""}</li>`).join("")}
+                  </ul>
+                  ` : `<p>${error}</p>`}
+    `;
+  };
+  showProfessorsHtml = data => {
+    return `
+    <h2 class="search-overlay__section-title">Professors</h2>
+    ${data.length ? `
+                  <ul class="professor-cards">
+                    ${data.map(item => `<li class="professor-card__list-item">
+                            <a class="professor-card" href="${item.permalink}">
+                              <img class="professor-card__image" src="${item.thumbnail}"
+                                alt="${item.title}">
+                              <span class="professor-card__name">${item.title}</span>
+                            </a>
+                          </li>`).join("")}
+                  </ul>
+                  ` : `<p>No professor found.</p>`}
+    `;
+  };
+  showEventsHtml = data => {
+    return `
+    <h2 class="search-overlay__section-title">Events</h2>
+    ${data.length ? data.map(item => `<div class="event-summary">
+                    <a class="event-summary__date t-center" href="${item.permalink}">
+                        <span class="event-summary__month">${item.eventMonth}</span>
+                        <span class="event-summary__day">${item.eventDate}</span>
+                    </a>
+                    <div class="event-summary__content">
+                        <h5 class="event-summary__title headline headline--tiny"><a
+                                href="${item.permalink}">${item.title}</a>
+                        </h5>
+                        <p>
+                            ${item.excerpt}"
+                            <a href="${item.permalink}" class="nu gray">Read more</a>
+                        </p>
+                    </div>
+                </div>`).join("") : `<p>No event found.</p>`}
+    `;
+  };
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
+
+/***/ }),
+
+/***/ "jquery":
+/*!*************************!*\
+  !*** external "jQuery" ***!
+  \*************************/
+/***/ ((module) => {
+
+module.exports = window["jQuery"];
 
 /***/ })
 
@@ -4091,6 +4243,18 @@ class Search {
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	
