@@ -25,7 +25,7 @@ function pageBanner($args = NULL)
         <div class="page-banner__content container container--narrow">
             <h1 class="page-banner__title"><?php echo $args["title"]; ?></h1>
             <div class="page-banner__intro">
-                <p style="text-transform: uppercase;"><?php echo $args["subtitle"]; ?></p>
+                <p><?php echo $args["subtitle"]; ?></p>
             </div>
         </div>
     </div>
