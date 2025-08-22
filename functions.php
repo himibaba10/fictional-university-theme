@@ -25,7 +25,8 @@ function university_files()
 
     // To provide necessary variables to the javascript file
     wp_localize_script("university_main_script", "universityData", array(
-        "rootUrl" => get_site_url()
+        "rootUrl" => get_site_url(),
+        "nonce" => wp_create_nonce("wp_rest") //to let WP know who is using the REST API methods
     ));
 }
 
