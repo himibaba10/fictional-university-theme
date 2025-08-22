@@ -126,3 +126,23 @@ function universityLoginTitle()
 }
 
 add_filter("login_headertitle", "universityLoginTitle");
+
+// Force Notes to be private
+function customizeNotes($data, $postArr)
+{
+    if ($data["post_type"] == "note") {
+        if (count_user_posts(get_current_user_id(), "note") > 4 and !$postArr["ID"]) {
+            die("You have reached your note limit.");
+        }
+
+        $data["post_title"] = sanitize_text_field($data["post_title"]);
+        $data["post_content"] = sanitize_textarea_field($data["post_content"]);
+    }
+
+    if ($data["post_type"] == "note" and $data["post_status"] != "trash") {
+        $data["post_status"] = "private";
+    }
+    return $data;
+}
+
+add_filter("wp_insert_post_data", "customizeNotes", 10, 2);
